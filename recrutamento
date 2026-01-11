@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DANGER GG - Recrutamento</title>
+<meta name="description" content="Faça parte da família DANGER GG! Recrutamento oficial para a guilda de Free Fire.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #000; color: #fff; min-height: 100vh; min-height: 100dvh; }
+.container { width: 100%; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+.header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+.header-back { background: none; border: none; color: #fff; cursor: pointer; padding: 4px; flex-shrink: 0; }
+.header-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); padding: 2px; position: relative; flex-shrink: 0; }
+.header-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.header-online { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #22c55e; border-radius: 50%; border: 2px solid #000; }
+.header-info { flex: 1; min-width: 0; }
+.header-name { font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 6px; }
+.header-status { font-size: 13px; color: rgba(255,255,255,0.5); }
+.header-icons { display: flex; gap: 16px; flex-shrink: 0; }
+.header-icons svg { width: 26px; height: 26px; }
+.messages { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px; }
+.profile-card { display: flex; flex-direction: column; align-items: center; padding: 20px 0; margin-bottom: 16px; }
+.profile-avatar { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); padding: 3px; margin-bottom: 12px; }
+.profile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.profile-name { font-weight: bold; font-size: 16px; }
+.profile-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+.profile-stats { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+.profile-btn { margin-top: 12px; padding: 8px 20px; font-size: 15px; font-weight: 600; background: rgba(255,255,255,0.1); color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+.profile-follow { font-size: 13px; color: rgba(255,255,255,0.3); margin-top: 16px; text-align: center; }
+.message { margin-bottom: 10px; display: flex; animation: fadeIn 0.3s ease; }
+.message.bot { justify-content: flex-start; }
+.message.user { justify-content: flex-end; }
+.message-bubble { max-width: 80%; padding: 12px 18px; font-size: 16px; line-height: 1.5; }
+.message.bot .message-bubble { background: rgba(255,255,255,0.1); border-radius: 18px 18px 18px 4px; }
+.message.user .message-bubble { background: linear-gradient(135deg, #3b82f6, #9333ea); border-radius: 18px 18px 4px 18px; }
+.typing { display: flex; gap: 5px; padding: 14px 18px; background: rgba(255,255,255,0.1); border-radius: 18px 18px 18px 4px; width: fit-content; }
+.typing span { width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; animation: bounce 1.4s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+.requirements { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin: 16px 0; }
+.requirements h3 { text-align: center; font-weight: bold; margin-bottom: 20px; font-size: 16px; }
+.req-item { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; cursor: pointer; }
+.req-checkbox { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+.req-checkbox.checked { background: linear-gradient(135deg, #a855f7, #ec4899); border-color: transparent; }
+.req-checkbox svg { width: 14px; height: 14px; display: none; }
+.req-checkbox.checked svg { display: block; }
+.req-label { font-size: 15px; color: rgba(255,255,255,0.9); }
+.progress-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 8px; margin-top: 20px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #ec4899); transition: width 0.3s; }
+.progress-text { text-align: center; font-size: 14px; color: rgba(255,255,255,0.4); margin-top: 10px; }
+.req-btn { width: 100%; margin-top: 20px; padding: 16px; font-size: 16px; font-weight: 600; border: none; border-radius: 14px; cursor: pointer; transition: all 0.2s; }
+.req-btn:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); cursor: not-allowed; }
+.req-btn:not(:disabled) { background: linear-gradient(90deg, #a855f7, #ec4899); color: #fff; }
+.admin-card { background: rgba(255,255,255,0.05); border:2px solid #25D366; border-radius:16px; padding:14px; display:flex; align-items:center; gap:14px; width:100%; box-sizing:border-box; transition:.2s; flex-direction: column; }
+.admin-card:hover { border-color: #1ebe5d; background: rgba(37, 211, 102, 0.05); }
+.admin-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.admin-info { flex: 1; min-width: 0; }
+.admin-name { font-weight: 600; font-size: 16px; }
+.admin-role { font-size: 14px; color: rgba(255,255,255,0.5); }
+.admin-phone { font-size: 14px; color: #22c55e; }
+.admin-wa { width: 44px; height: 44px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.admin-wa svg { width: 24px; height: 24px; }
+.input-area { padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+.input-row { display: flex; align-items: center; gap: 12px; }
+.input-field { flex: 1; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 28px; padding: 12px 18px; }
+.input-field input { flex: 1; background: none; border: none; color: #fff; font-size: 16px; outline: none; min-width: 0; }
+.input-field input::placeholder { color: rgba(255,255,255,0.4); }
+.send-btn { color: #3b82f6; font-weight: 600; font-size: 16px; background: none; border: none; cursor: pointer; flex-shrink: 0; }
+.backup-btn { margin-top: 12px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; font-size: 14px; color: rgba(255,255,255,0.5); background: none; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+.backup-btn:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <button class="header-back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <div class="header-avatar"><img src="logo.png" alt="DANGER GG"><span class="header-online"></span></div>
+    <div class="header-info">
+      <div class="header-name">
+    dangergg_ff
+    <img src="verificado.png" width="20px" alt="verificado">
+      </div>
+      <div class="header-status">Ativo(a) agora</div>
+    </div>
+    <div class="header-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7zM14 5H3a2 2 0 00-2 2v10a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2z"/></svg>
+    </div>
+  </header>
+
+  <div class="messages" id="messages">
+    <div class="profile-card">
+      <div class="profile-avatar"><img src="logo.png" alt="DANGER GG"></div>
+      <div class="profile-name">dangergg_ff</div>
+      <div class="profile-subtitle">DANGER GG · Instagram</div>
+      <div class="profile-stats">10,3 mil seguidores · 64 publicações</div>
+      <button class="profile-btn">Ver perfil</button>
+      <div class="profile-follow">Vocês se seguem no Instagram</div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-row">
+      <div class="input-field">
+        <input type="text" id="userInput" placeholder="Enviar mensagem..." disabled>
+      </div>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">Enviar</button>
+    </div>
+
+<script>
+const ADMINS = [
+  { name: "LIDER DRAK", role: "Líder Principal", phone: "+55 88 98169-2260", whatsapp: "5588981692260", image: "adm1.png" },
+  { name: "LIDER KABULOSA", role: "Líder", phone: "+55 85 9212-5491", whatsapp: "558592125491", image: "adm2.png" },
+  { name: "ADM ELVIS", role: "Administrador", phone: "+55 83 99167-2088", whatsapp: "5583991672088", image: "adm3.png" }
+];
+const REQUIREMENTS = ["150 Pontos na Guerra de Guildas","3.000 Pontos semanais","Participação em xTreino/Eventos","Acima de 15 anos","Respeito & Disciplina","Discord ativo","WhatsApp ativo","Jogar GG regularmente"];
+let phase = 'greeting', formData = {}, checkedItems = new Array(8).fill(false);
+
+function addMessage(text, isBot, type = 'text') {
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'message ' + (isBot ? 'bot' : 'user');
+  
+  if (type === 'requirements') {
+    div.innerHTML = `<div class="requirements"><h3>🔥 Requisitos da DANGER GG 🔥</h3>${REQUIREMENTS.map((r,i) => `<label class="req-item" onclick="toggleReq(${i})"><div class="req-checkbox" id="check${i}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><span class="req-label">⚔️ ${r}</span></label>`).join('')}<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div><p class="progress-text" id="progressText">0/8 requisitos</p><button class="req-btn" id="reqBtn" disabled onclick="confirmReq()">Marque todos os requisitos</button></div>`;
+  } else if (type === 'admins') {
+    div.innerHTML = ADMINS.map(a => `<div class="admin-card" onclick="sendToAdmin('${a.whatsapp}','${a.name}')"><img class="admin-avatar" src="${a.image}" alt="${a.name}"><div class="admin-info"><div class="admin-name">${a.name}</div><div class="admin-role">${a.role}</div><div class="admin-phone">${a.phone}</div></div><div class="admin-wa"><svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div></div>`).join('');
+  } else {
+    div.innerHTML = `<div class="message-bubble">${text}</div>`;
+  }
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTyping() {
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.id = 'typing';
+  div.className = 'message bot';
+  div.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function hideTyping() { document.getElementById('typing')?.remove(); }
+
+function botMessage(text, type = 'text', delay = 1200) {
+  showTyping();
+  setTimeout(() => { hideTyping(); addMessage(text, true, type); }, delay);
+}
+
+function toggleReq(i) {
+  checkedItems[i] = !checkedItems[i];
+  const el = document.getElementById('check' + i);
+  el.classList.toggle('checked', checkedItems[i]);
+  const count = checkedItems.filter(Boolean).length;
+  document.getElementById('progressFill').style.width = (count/8*100) + '%';
+  document.getElementById('progressText').textContent = count + '/8 requisitos';
+  const btn = document.getElementById('reqBtn');
+  btn.disabled = count < 8;
+  btn.textContent = count === 8 ? 'Confirmar ✓' : 'Marque todos os requisitos';
+}
+
+function confirmReq() {
+  addMessage('Pronto! Marquei tudo ✅', false);
+  setTimeout(() => {
+    botMessage('Show demais! Você atende todos os requisitos! 🎉', 'text', 1000);
+    setTimeout(() => {
+      botMessage('Agora vou precisar de algumas informações suas, pode ser? É rapidinho! 😊', 'text', 1500);
+      setTimeout(() => {
+        botMessage('Me conta, qual é o seu nome?', 'text', 1200);
+        setTimeout(() => { phase = 'nome'; enableInput('Digite seu nome...'); }, 1400);
+      }, 1800);
+    }, 1300);
+  }, 500);
+}
+
+function enableInput(placeholder) {
+  const input = document.getElementById('userInput');
+  input.disabled = false;
+  input.placeholder = placeholder;
+  input.focus();
+}
+
+function sendMessage() {
+  const input = document.getElementById('userInput');
+  const value = input.value.trim();
+  if (!value) return;
+  
+  if (phase === 'idade' && (isNaN(parseInt(value)) || parseInt(value) < 15)) {
+    addMessage(value, false);
+    setTimeout(() => botMessage('Eita, a idade mínima é 15 anos! Me passa sua idade certinha 😅', 'text', 800), 300);
+    input.value = '';
+    return;
+  }
+  
+  addMessage(value, false);
+  formData[phase] = value;
+  input.value = '';
+  input.disabled = true;
+  
+  const flows = {
+    nome: () => { botMessage('Prazer, ' + value + '! Nome bonito! 😄', 'text', 800); setTimeout(() => { botMessage('Quantos anos você tem?', 'text', 1200); setTimeout(() => { phase = 'idade'; enableInput('Digite sua idade...'); }, 1400); }, 1000); },
+    idade: () => { botMessage('Perfeito! Idade boa! 👍', 'text', 800); setTimeout(() => { botMessage('Me fala seu nick no Free Fire? 🎮', 'text', 1300); setTimeout(() => { phase = 'nick'; enableInput('Digite seu nick...'); }, 1500); }, 1000); },
+    nick: () => { botMessage(value + '? Nick daora! 🔥', 'text', 800); setTimeout(() => { botMessage('E qual é seu ID do Free Fire?', 'text', 1200); setTimeout(() => { phase = 'idGame'; enableInput('Digite seu ID...'); }, 1400); }, 1000); },
+    idGame: () => { botMessage('Anotado! ✍️', 'text', 700); setTimeout(() => { botMessage('Por último, seu WhatsApp? 📱', 'text', 1400); setTimeout(() => { phase = 'contato'; enableInput('Ex: (85) 99999-9999'); }, 1600); }, 900); },
+    contato: () => { botMessage('Maravilha! Anotei tudo! 📝', 'text', 800); setTimeout(() => { botMessage('Você tá quase dentro da família DANGER! 🔥❤️‍🔥', 'text', 1300); setTimeout(() => { botMessage('Escolha um líder pra enviar seu formulario:', 'text', 1500); setTimeout(() => { addMessage('', true, 'admins'); phase = 'done'; }, 1700); }, 1500); }, 1000); }
+  };
+  
+  setTimeout(() => flows[phase]?.(), 400);
+}
+
+function sendToAdmin(whatsapp, name) {
+  addMessage('Vou falar com ' + name + '! 👋', false);
+  setTimeout(() => {
+    botMessage('Ótima escolha! Redirecionando... Bem-vindo à DANGER GG! 🔥❤️‍🔥', 'text', 1000);
+    setTimeout(() => {
+      const msg = encodeURIComponent('𝐅𝐎𝐑𝐌𝐔𝐋𝐀𝐑𝐈𝐎 𝐃𝐀 DANGER GAMING❤‍🔥\n\n𝐍𝐎𝐌𝐄 // ' + formData.nome + '\n\n𝐈𝐃𝐀𝐃𝐄 // ' + formData.idade + '\n\n𝐍𝐈𝐂𝐊 𝐍𝐎 𝐉𝐎𝐆𝐎 // ' + formData.nick + '\n\n𝐂𝐎𝐍𝐓𝐀𝐓𝐎 𝐃𝐎 𝐖𝐡𝐚𝐭𝐬𝐚𝐩𝐩 // ' + formData.contato + '\n\n𝐈𝐃 𝐃𝐎 𝐅𝐑𝐄𝐄 𝐅𝐈𝐑𝐄 // ' + formData.idGame + '\n\n𝐒𝐄𝐉𝐀 𝐁𝐄𝐌 𝐕𝐈𝐍𝐃𝐎 𝐀 𝐆𝐔𝐈𝐋𝐃𝐀 ❤‍🔥\n\nRECRUTAMENTO POR CHAT - https://dangergg.netlify.app');
+      window.location.href = 'https://wa.me/' + whatsapp + '?text=' + msg;
+    }, 1500);
+  }, 500);
+}
+
+document.getElementById('userInput').addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+// Start greeting
+const greetings = ['Oii! 👋', 'Tudo bem com você?', 'Que bom te ver por aqui! 🔥', 'Bem-vindo(a) ao recrutamento da DANGER GG! ❤️‍🔥', 'Aqui a gente leva o Free Fire a sério, mas sem perder a diversão! haha'];
+let delay = 800;
+greetings.forEach((msg, i) => { setTimeout(() => botMessage(msg, 'text', 1000), delay); delay += 2000; });
+setTimeout(() => {
+  botMessage('Preciso te mostrar nossos requisitos. Marca os que você consegue cumprir! 💪', 'text', 1500);
+  setTimeout(() => addMessage('', true, 'requirements'), 2000);
+}, delay);
+</script>
+</body>
+</html>
